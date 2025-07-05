@@ -17,7 +17,7 @@ const Navbar = () => {
       <div className="space-x-4">
         <button
           onClick={() => {
-            router.push("/");
+            router.push("/add");
           }}
           className="px-6 py-2 cursor-pointer bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
         >
