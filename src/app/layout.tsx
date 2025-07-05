@@ -29,7 +29,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100`}
       >
         <Navbar />
-        {children}
+        <main className="flex-1 flex flex-col items-center justify-center max-w-7xl">
+          {children}
+        </main>
       </body>
     </html>
   );
