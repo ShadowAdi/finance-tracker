@@ -8,13 +8,20 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-
-interface Transaction {
-  amount: number;
-  date: Date;
-  description: string;
-  category: string;
-}
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
+import axios from "axios";
+import { toast } from "sonner";
+import { Transaction } from "@/lib/types";
 
 interface RecentTransactionsProps {
   transactions: Transaction[];
@@ -23,6 +30,19 @@ interface RecentTransactionsProps {
 export default function RecentTransactions({
   transactions,
 }: RecentTransactionsProps) {
+  const DeleteTransaction = async (id: string) => {
+    try {
+      const response = await axios.delete(`/api/transactions/${id}`);
+      const { success, message } = await response.data;
+      if (success) {
+        console.log("Message in deleting transaction ", message);
+        toast(message);
+      }
+    } catch (error: any) {
+      console.error(`Error in getting delete transaction `, error);
+      toast.error(error);
+    }
+  };
   return (
     <Card>
       <CardHeader>
@@ -54,13 +74,40 @@ export default function RecentTransactions({
                   >
                     Edit
                   </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    className="cursor-pointer"
-                  >
-                    Delete
-                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      {" "}
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        className="cursor-pointer"
+                      >
+                        Delete
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you absolutely sure?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently
+                          delete your transaction and remove your data from our
+                          servers.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => {
+                            DeleteTransaction(t._id);
+                          }}
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </TableCell>
               </TableRow>
             ))}

@@ -9,7 +9,8 @@ export interface Transaction {
     | "Health"
     | "Entertainment"
     | "Other";
-  date:Date;
+  date: Date;
+  _id: string;
 }
 
 export interface MonthlyData {
