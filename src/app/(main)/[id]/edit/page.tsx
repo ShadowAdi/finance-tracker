@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams,useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -38,6 +38,7 @@ const EditTransaction = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [transaction, setTransaction] = useState<Transaction | null>(null);
+  const router=useRouter()
 
   const form = useForm<Transaction>({
     resolver: zodResolver(formSchema),
@@ -49,7 +50,6 @@ const EditTransaction = () => {
     },
   });
 
-  // Fetch transaction data when component mounts
   const fetchTransaction = async () => {
     try {
       setLoading(true);
@@ -58,7 +58,6 @@ const EditTransaction = () => {
 
       if (success && singleTransaction) {
         setTransaction(singleTransaction);
-        // Update form with fetched data
         form.reset({
           amount: singleTransaction.amount,
           date: singleTransaction.date,
@@ -89,6 +88,7 @@ const EditTransaction = () => {
       if (success) {
         toast("Transaction has been updated successfully");
         fetchTransaction();
+        router.push("/")
       } else {
         toast(message || "Failed to update transaction");
       }

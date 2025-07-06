@@ -13,6 +13,20 @@ export interface Transaction {
   _id: string;
 }
 
+export interface Budget {
+  amount: number;
+  month: string;
+  category:
+    | "Food"
+    | "Transport"
+    | "Shopping"
+    | "Utilities"
+    | "Health"
+    | "Entertainment"
+    | "Other";
+  _id: string;
+}
+
 export interface MonthlyData {
   month: string;
   amount: number;
