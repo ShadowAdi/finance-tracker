@@ -19,12 +19,12 @@ import {
 import { categories } from "@/data/CategoryData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
+import axios from "axios";
 
 const formSchema = z.object({
-  amount: z.number().min(1, {
-    message: "Minumum Elemenet Should Be 1",
-  }),
+  amount: z.coerce.number().min(1, { message: "Minimum element should be 1" }),
   date: z.string(),
   description: z.string(),
   category: z.enum(categories),
@@ -40,8 +40,20 @@ const Add = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Values ", values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await axios.post("/api/transactions", values);
+      const { success, message } = await response.data;
+      if (success) {
+        toast("Transaction has been created");
+      } else {
+        toast(message || "Failed to created Transaction");
+      }
+      form.reset();
+    } catch (error) {
+      console.error("Failed to create Transaction ", error);
+      toast("Failed to create Transaction");
+    }
   }
   return (
     <section className="flex-1 flex items-center max-w-7xl justify-center w-full ">
@@ -50,7 +62,9 @@ const Add = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-6 w-full sm:w-2/3 bg-white py-6 px-8 rounded-md "
         >
-        <h1 className="text-3xl text-black text-center font-semibold">Add Transaction</h1>
+          <h1 className="text-3xl text-black text-center font-semibold">
+            Add Transaction
+          </h1>
           <FormField
             name="amount"
             control={form.control}
@@ -82,7 +96,7 @@ const Add = () => {
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Descrption</FormLabel>
+                <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -122,6 +136,13 @@ const Add = () => {
             )}
           />
         </form>
+        <button
+          type="submit"
+          disabled={form.formState.isSubmitting}
+          className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 disabled:opacity-50"
+        >
+          {form.formState.isSubmitting ? "Adding..." : "Add Transaction"}
+        </button>
       </Form>
     </section>
   );
