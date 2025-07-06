@@ -40,7 +40,7 @@ export default function RecentTransactions({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {transactions.slice(0, 5).map((t, index) => (
+            {transactions.map((t, index) => (
               <TableRow key={index}>
                 <TableCell>{new Date(t.date).toLocaleDateString()}</TableCell>
                 <TableCell>₹{t.amount}</TableCell>
