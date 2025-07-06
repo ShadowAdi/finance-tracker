@@ -48,8 +48,9 @@ const Add = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-6 w-full sm:w-2/3 "
+          className="space-y-6 w-full sm:w-2/3 bg-white py-6 px-8 rounded-md "
         >
+        <h1 className="text-3xl text-black text-center font-semibold">Add Transaction</h1>
           <FormField
             name="amount"
             control={form.control}
