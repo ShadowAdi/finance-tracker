@@ -17,6 +17,8 @@ const transactionSchema = new mongoose.Schema({
       "Other",
     ],
   },
+},{
+  timestamps:true
 });
 
 export default mongoose.models.Transaction ||
