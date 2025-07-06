@@ -60,7 +60,7 @@ const Add = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-6 w-full sm:w-2/3 bg-white py-6 px-8 rounded-md "
+          className="space-y-6 w-full flex flex-col  sm:w-2/3 bg-white py-6 px-8 rounded-md "
         >
           <h1 className="text-3xl text-black text-center font-semibold">
             Add Transaction
@@ -112,14 +112,14 @@ const Add = () => {
             control={form.control}
             name="category"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="w-full">
                 <FormLabel>Category</FormLabel>
                 <FormControl>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger className="w-auto">
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                     <SelectContent>
@@ -135,14 +135,14 @@ const Add = () => {
               </FormItem>
             )}
           />
-        </form>
         <button
           type="submit"
           disabled={form.formState.isSubmitting}
-          className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 disabled:opacity-50"
+          className="bg-indigo-700 text-white cursor-pointer px-4 py-2 rounded-md hover:bg-indigo-800 disabled:opacity-50"
         >
           {form.formState.isSubmitting ? "Adding..." : "Add Transaction"}
         </button>
+        </form>
       </Form>
     </section>
   );

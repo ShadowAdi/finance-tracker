@@ -2,6 +2,39 @@ import { connectDB } from "@/lib/db";
 import Transaction from "@/lib/models/Transaction";
 import { NextResponse } from "next/server";
 
+export async function GET(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  connectDB();
+  try {
+    const { id } = params;
+    if (!id) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Transaction id not provided",
+        },
+        {
+          status: 401,
+        }
+      );
+    }
+    const singleTransaction = await Transaction.findById(id);
+    return NextResponse.json({
+      success: true,
+      message: "Transaction has been found",
+      singleTransaction,
+    });
+  } catch (error) {
+    console.error("Faied to found Transaction.", error);
+    return NextResponse.json(
+      { success: false, message: "Faied to found Transaction." },
+      { status: 500 }
+    );
+  }
+}
+
 export async function PUT(
   req: Request,
   { params }: { params: { id: string } }
@@ -21,6 +54,10 @@ export async function PUT(
         }
       );
     }
+    if (data.date) {
+      data.date = new Date(data.date);
+    }
+
     const updatedTransaction = await Transaction.findByIdAndUpdate(id, data, {
       new: true,
     });

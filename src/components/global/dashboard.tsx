@@ -36,7 +36,7 @@ const Dashboard = () => {
         <MonthlyExpensesChart transactions={transactions} />
         <CategoryPieChart transactions={transactions} />
       </div>
-      <RecentTransactions transactions={transactions} />
+      <RecentTransactions transactions={transactions} GetAllTransactions={GetAllTransactions} />
     </div>
   );
 };

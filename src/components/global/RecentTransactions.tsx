@@ -22,14 +22,18 @@ import {
 import axios from "axios";
 import { toast } from "sonner";
 import { Transaction } from "@/lib/types";
+import { useRouter } from "next/navigation";
 
 interface RecentTransactionsProps {
   transactions: Transaction[];
+  GetAllTransactions:()=>void;
 }
 
 export default function RecentTransactions({
   transactions,
+   GetAllTransactions
 }: RecentTransactionsProps) {
+  const router = useRouter();
   const DeleteTransaction = async (id: string) => {
     try {
       const response = await axios.delete(`/api/transactions/${id}`);
@@ -70,13 +74,15 @@ export default function RecentTransactions({
                   <Button
                     variant="outline"
                     size="sm"
+                    onClick={() => {
+                      router.push(`/${t._id}/edit`);
+                    }}
                     className="mr-2 bg-indigo-600 cursor-pointer text-white hover:bg-indigo-700 hover:text-white"
                   >
                     Edit
                   </Button>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
-                      {" "}
                       <Button
                         variant="destructive"
                         size="sm"
@@ -97,11 +103,15 @@ export default function RecentTransactions({
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel className="cursor-pointer">
+                          Cancel
+                        </AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() => {
                             DeleteTransaction(t._id);
+                            GetAllTransactions()
                           }}
+                          className="bg-indigo-600 hover:bg-indigo-700 cursor-pointer"
                         >
                           Continue
                         </AlertDialogAction>
